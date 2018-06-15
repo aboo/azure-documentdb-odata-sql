@@ -421,7 +421,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN p IN c.products WHERE p.name = 'test' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN p IN c.products WHERE p.name = 'test' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -432,7 +432,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN p IN c.products WHERE p.price > 10 ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN p IN c.products WHERE p.price > 10 ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -443,7 +443,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN p IN c.products WHERE p.shipped = true ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN p IN c.products WHERE p.shipped = true ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -454,7 +454,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN p IN c.products JOIN l IN c.locations WHERE p.name = 'test' AND l.name = 'test2' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN p IN c.products JOIN l IN c.locations WHERE p.name = 'test' AND l.name = 'test2' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -465,7 +465,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN p IN c.competitors WHERE p.id = '6a7ad0aa-678e-40f9-8cdf-03e3ab4a4106' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN p IN c.competitors WHERE p.id = '6a7ad0aa-678e-40f9-8cdf-03e3ab4a4106' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -476,7 +476,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN p IN c.competitors WHERE p.name = 'test' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN p IN c.competitors WHERE p.name = 'test' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -487,7 +487,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN p IN c.competitors WHERE p.name = 'test' AND c.englishName = 'test1' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN p IN c.competitors WHERE p.name = 'test' AND c.englishName = 'test1' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -498,7 +498,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN j IN c.products WHERE j.name = 'test' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN j IN c.products WHERE j.name = 'test' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -509,7 +509,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN j IN c.competitor.locations WHERE j.name = 'test' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN j IN c.competitor.locations WHERE j.name = 'test' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -520,7 +520,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN j IN c.competitor.competitor.locations WHERE j.name = 'test' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN j IN c.competitor.competitor.locations WHERE j.name = 'test' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -531,7 +531,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN j IN c.competitor.competitor.competitor.locations WHERE j.name = 'test' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN j IN c.competitor.competitor.competitor.locations WHERE j.name = 'test' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -542,7 +542,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN j IN c.competitor.competitorTwo.competitor.locations WHERE j.name = 'test' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN j IN c.competitor.competitorTwo.competitor.locations WHERE j.name = 'test' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -553,7 +553,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN j IN c.competitor.competitorTwo.locations WHERE j.id = 'test' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN j IN c.competitor.competitorTwo.locations WHERE j.id = 'test' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -564,7 +564,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN j IN c.competitor.locations JOIN l IN j.locations WHERE l.id = 'test' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN j IN c.competitor.locations JOIN l IN j.locations WHERE l.id = 'test' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -575,7 +575,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN l IN c.payload.bet.legs JOIN o IN l.outcomes WHERE o.id = 'test' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN l IN c.payload.bet.legs JOIN o IN l.outcomes WHERE o.id = 'test' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -627,7 +627,7 @@ namespace azure_documentdb_odata_sql_tests
 			var sqlQuery = Translator.Translate(oDataQueryOptions, TranslateOptions.ALL);
 
 			// assert
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN d IN c.competitors WHERE d['group'].id = 'groupId' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN d IN c.competitors WHERE d['group'].id = 'groupId' ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -690,7 +690,8 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN l IN c.payload.bet.legs JOIN o IN l.outcomes WHERE o.competitor.id = 'test' ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN l IN c.payload.bet.legs JOIN o IN l.outcomes WHERE o.competitor.id = 'test' ", sqlQuery);
+		}
 
 		[TestMethod]
 		public void TranslateAnyToJoin_ReturnsCorrectResult_WhenQueryIsBasedOnANestedProperty()
@@ -702,7 +703,7 @@ namespace azure_documentdb_odata_sql_tests
 			var sqlQuery = Translator.Translate(oDataQueryOptions, TranslateOptions.ALL);
 
 			// assert
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN x IN c.sportSummaries WHERE x.single.totalAmount > 0 ", sqlQuery);
+			Assert.AreEqual("SELECT DISTINCT VALUE c FROM c JOIN x IN c.sportSummaries WHERE x.single.totalAmount > 0 ", sqlQuery);
 		}
 
 		#region Helpers

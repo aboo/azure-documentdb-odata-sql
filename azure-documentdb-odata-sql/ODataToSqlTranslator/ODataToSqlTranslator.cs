@@ -105,7 +105,7 @@ namespace Microsoft.Azure.Documents.OData.Sql
 			if (joinClause.Any())
 			{
 				selectClause = selectClause.Replace($"{Constants.SQLSelectSymbol} {Constants.SQLAsteriskSymbol}",
-					$"{Constants.SQLSelectSymbol} {Constants.SQLValueSymbol} {Constants.SQLFieldNameSymbol}");
+					$"{Constants.SQLSelectSymbol} {Constants.SQLDistinct} {Constants.SQLValueSymbol} {Constants.SQLFieldNameSymbol}");
 			}
 
 			return string.Concat(selectClause, joinClause, whereClause, orderbyClause);

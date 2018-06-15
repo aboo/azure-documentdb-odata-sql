@@ -112,6 +112,11 @@
 		/// Sql "OR" operator
 		/// </summary>
 		public const string SQLOrSymbol = "OR";
+
+		/// <summary>
+		/// Sql "DISTINCT" keyword
+		/// </summary>
+		public const string SQLDistinct = "DISTINCT";
 		#endregion
 
 		#region Symbols
