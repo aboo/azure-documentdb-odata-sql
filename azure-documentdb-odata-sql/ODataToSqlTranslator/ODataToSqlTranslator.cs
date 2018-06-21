@@ -86,7 +86,7 @@ namespace Microsoft.Azure.Documents.OData.Sql
 						? string.Empty
 						: $"{this.TranslateFilterClause(odataQueryOptions.Filter.FilterClause)}";
 				whereClause = (!string.IsNullOrEmpty(customWhereClause) && !string.IsNullOrEmpty(whereClause))
-						? $"{customWhereClause} AND {whereClause}"
+						? $"({customWhereClause}) AND ({whereClause})"
 						: $"{customWhereClause}{whereClause}";
 				whereClause = string.IsNullOrEmpty(whereClause)
 						? string.Empty

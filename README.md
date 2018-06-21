@@ -21,6 +21,7 @@ PRs are welcome.
 Converts [OData V4](http://docs.oasis-open.org/odata/odata/v4.0/odata-v4.0-part1-protocol.html) queries to [DocumentDB SQL](https://azure.microsoft.com/en-us/documentation/articles/documentdb-sql-query/) queries. 
 
 ## Release Notes
+* 2.0.38 Fixed issue addditonal where clasuse not wrapped by brackets.
 * 2.0.37 Fixed issue with join and condition based on nested property.
 * 2.0.33 Fixed a first level complex node following by a nested constant compare generating wrong query
 * 2.0.31 Added support for using group as property name
@@ -136,3 +137,4 @@ The options can be combined with bit operators such as ```(TranslateOptions.SELE
 * **Aboo Azarnoush** - Lambda Solutions
 * **Ziyou Zheng** - Microsoft Universal Store Team -
 * **Amir Hesami** - Palmerbet
+* **Roc Wang** - Palmerbet

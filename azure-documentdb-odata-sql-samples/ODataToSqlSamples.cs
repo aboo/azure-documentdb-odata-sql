@@ -146,7 +146,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.WHERE_CLAUSE, "c.dataType = 'MockOpenType'");
-			Assert.AreEqual("WHERE c.dataType = 'MockOpenType' AND c.englishName = 'Microsoft' AND c.intField <= 5 ", sqlQuery);
+			Assert.AreEqual("WHERE (c.dataType = 'MockOpenType') AND (c.englishName = 'Microsoft' AND c.intField <= 5) ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -157,7 +157,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.SELECT_CLAUSE | TranslateOptions.WHERE_CLAUSE, "c.dataType = 'MockOpenType'");
-			Assert.AreEqual("SELECT * FROM c WHERE c.dataType = 'MockOpenType' AND c.englishName = 'Microsoft' ", sqlQuery);
+			Assert.AreEqual("SELECT * FROM c WHERE (c.dataType = 'MockOpenType') AND (c.englishName = 'Microsoft') ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -289,7 +289,7 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL, "c._t = 'dataType'");
-			Assert.AreEqual("SELECT TOP 30 c.id, c.englishName FROM c WHERE c._t = 'dataType' AND c.title = 'title1' AND c.property.field != 'val' OR c.viewedCount >= 5 AND (c.likedCount != 3 OR c.enumNumber = 'TWO') ORDER BY c._lastClientEditedDateTime ASC, c.createdDateTime DESC ", sqlQuery);
+			Assert.AreEqual("SELECT TOP 30 c.id, c.englishName FROM c WHERE (c._t = 'dataType') AND (c.title = 'title1' AND c.property.field != 'val' OR c.viewedCount >= 5 AND (c.likedCount != 3 OR c.enumNumber = 'TWO')) ORDER BY c._lastClientEditedDateTime ASC, c.createdDateTime DESC ", sqlQuery);
 		}
 
 		[TestMethod]
@@ -708,6 +708,20 @@ namespace azure_documentdb_odata_sql_tests
 
 			// assert
 			Assert.AreEqual("SELECT VALUE c FROM c JOIN x IN c.sportSummaries WHERE x.single.totalAmount > 0 ", sqlQuery);
+		}
+
+		[TestMethod]
+		public void Translate_ReturnsCorrectResult_WhenQueryHasAdditionalWhereClauses()
+		{
+			// arrange
+			var oDataQueryOptions = GetODataQueryOptions("$filter=sportSummaries/any(x: x/single/totalAmount gt 0)");
+			var additionalWhereClause = "1=1";
+
+			// act
+			var sqlQuery = Translator.Translate(oDataQueryOptions, TranslateOptions.ALL, additionalWhereClause);
+
+			// assert
+			Assert.AreEqual("SELECT VALUE c FROM c JOIN x IN c.sportSummaries WHERE (1=1) AND (x.single.totalAmount > 0) ", sqlQuery);
 		}
 
 		#region Helpers
