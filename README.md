@@ -21,7 +21,8 @@ PRs are welcome.
 Converts [OData V4](http://docs.oasis-open.org/odata/odata/v4.0/odata-v4.0-part1-protocol.html) queries to [DocumentDB SQL](https://azure.microsoft.com/en-us/documentation/articles/documentdb-sql-query/) queries. 
 
 ## Release Notes
-* 2.0.50 Added netstandard2.0 support
+* 3.1.70 Added netcore 3.0 support
+* 3.0.70 Added netstandard 2.0 support
 * 2.0.40 Fixed checking null equality against range variable reference node and nested one failing
 * 2.0.38 Fixed issue additional where clause not wrapped by brackets.
 * 2.0.37 Fixed issue with join and condition based on nested property.

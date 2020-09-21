@@ -21,7 +21,7 @@ namespace azure_documentdb_odata_sql_tests
 
 
 	[DataContract]
-	public class MockOpenType : Document
+	public class MockOpenType
 	{
 		/// <summary>
 		/// The property name for EnglishName
@@ -44,6 +44,14 @@ namespace azure_documentdb_odata_sql_tests
 		public const string BalancePropertyName = "balance";
 		public const string BonusPropertyName = "bonus";
 		public const string SportSummariesPropertyName = "sportSummaries";
+		public const string IdPropertyName = "id";
+
+		/// <summary>
+		/// Id
+		/// </summary>
+		[DataMember(Name = IdPropertyName)]
+		[JsonProperty(PropertyName = IdPropertyName)]
+		public string Id { get; set; }
 
 		/// <summary>
 		/// EnglishName
@@ -288,7 +296,7 @@ namespace azure_documentdb_odata_sql_tests
 	}
 
 	[DataContract]
-	public class Group : Document
+	public class Group
 	{
 		public const string IdPropertyName = "id";
 
