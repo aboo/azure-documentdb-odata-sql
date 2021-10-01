@@ -792,6 +792,37 @@ namespace azure_documentdb_odata_sql_tests
 			Assert.AreEqual("SELECT * FROM c WHERE c.payload.payload = null ", sqlQuery);
 		}
 
+		[TestMethod]
+		[DataRow("http://localhost/User?$filter=startswith(tolower(englishName), 'microsoft')", "SELECT * FROM c WHERE STARTSWITH(c.englishName,'microsoft', true) ")]
+		[DataRow("http://localhost/User?$filter=contains(tolower(englishName), 'microsoft')", "SELECT * FROM c WHERE CONTAINS(c.englishName,'microsoft', true) ")]
+		[DataRow("http://localhost/User?$filter=endswith(tolower(englishName), 'microsoft')", "SELECT * FROM c WHERE ENDSWITH(c.englishName,'microsoft', true) ")]
+		[DataRow("http://localhost/User?$filter=startswith(toupper(englishName), 'microsoft')", "SELECT * FROM c WHERE STARTSWITH(c.englishName,'microsoft', true) ")]
+		[DataRow("http://localhost/User?$filter=contains(toupper(englishName), 'microsoft')", "SELECT * FROM c WHERE CONTAINS(c.englishName,'microsoft', true) ")]
+		[DataRow("http://localhost/User?$filter=endswith(toupper(englishName), 'microsoft')", "SELECT * FROM c WHERE ENDSWITH(c.englishName,'microsoft', true) ")]
+		public void Translate_ReturnsCaseInsensitiveStringFunction_WhenODataQueryContainsCaseInsensitiveStringQuery(string uriString, string expectedSqlQuery)
+		{
+			HttpRequest.QueryString = QueryString.FromUriComponent(new Uri(uriString));
+			var oDataQueryOptions = new ODataQueryOptions(ODataQueryContext, HttpRequest);
+
+			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
+			var actualSqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
+			Assert.AreEqual(expectedSqlQuery, actualSqlQuery);
+		}
+
+		[TestMethod]
+		[DataRow("http://localhost/User?$filter=startswith(englishName, 'microsoft')", "SELECT * FROM c WHERE STARTSWITH(c.englishName,'microsoft') ")]
+		[DataRow("http://localhost/User?$filter=contains(englishName, 'microsoft')", "SELECT * FROM c WHERE CONTAINS(c.englishName,'microsoft') ")]
+		[DataRow("http://localhost/User?$filter=endswith(englishName, 'microsoft')", "SELECT * FROM c WHERE ENDSWITH(c.englishName,'microsoft') ")]
+		public void Translate_ReturnsCaseSensitiveStringFunction_WhenODataQueryDoesNotContainCaseInsensitiveStringQuery(string uriString, string expectedSqlQuery)
+		{
+			HttpRequest.QueryString = QueryString.FromUriComponent(new Uri(uriString));
+			var oDataQueryOptions = new ODataQueryOptions(ODataQueryContext, HttpRequest);
+
+			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
+			var actualSqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
+			Assert.AreEqual(expectedSqlQuery, actualSqlQuery);
+		}
+
 		#region Helpers
 		private static ODataQueryOptions GetODataQueryOptions(string oData)
 		{

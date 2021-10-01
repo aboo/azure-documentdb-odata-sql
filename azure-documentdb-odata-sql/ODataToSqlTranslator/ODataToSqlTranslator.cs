@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Azure.Documents.OData.Sql.Extensions;
 using Microsoft.OData.UriParser;
 
@@ -115,7 +117,8 @@ namespace Microsoft.Azure.Documents.OData.Sql
 					$"{Constants.SQLSelectSymbol} {Constants.SQLValueSymbol} {Constants.SQLFieldNameSymbol}");
 			}
 
-			return string.Concat(selectClause, joinClause, whereClause, orderbyClause);
+			var sqlQuery = string.Concat(selectClause, joinClause, whereClause, orderbyClause);
+			return ModifyStringFunctions(sqlQuery);
 		}
 
 		/// <summary>
@@ -170,5 +173,78 @@ namespace Microsoft.Azure.Documents.OData.Sql
 		/// Visitor patterned ODataNodeToStringBuilder
 		/// </summary>
 		private ODataNodeToStringBuilder oDataNodeToStringBuilder { get; set; }
+
+		private string ModifyStringFunctions(string sqlQuery)
+		{
+			var updatedQuery = sqlQuery;
+			var functionNames = new[] { "startswith" , "endswith", "contains" }; 
+			var stringFunctionNames = new[] { Constants.SQLUpperSymbol, Constants.SQLLowerSymbol };
+
+			foreach (var functionName in functionNames)
+			{
+				foreach (var stringFunctionName in stringFunctionNames)
+				{
+					updatedQuery = UpdateFunction(updatedQuery, functionName, stringFunctionName);
+				}
+			}
+
+			return updatedQuery;
+		}
+
+		private string UpdateFunction(string sqlQuery, string functionName, string stringFunctionName)
+		{
+			var updatedQuery = sqlQuery;
+			var stringsToUpdate = GetStringsToReplace(sqlQuery, functionName, stringFunctionName);
+
+			foreach (var stringToUpdate in stringsToUpdate)
+			{
+				var propertyName = GetPropertyName(stringToUpdate, stringFunctionName);
+				var updated = GetUpdatedQuery(stringToUpdate, propertyName, stringFunctionName);
+				updatedQuery = updatedQuery.Replace(stringToUpdate, updated);
+			}
+
+			return updatedQuery;
+		}
+
+		private List<string> GetStringsToReplace(string query, string functionName, string stringFunctionName)
+		{
+			List<string> stringsToReplace = new List<string>();
+			var regex = $@"{functionName}\({stringFunctionName}\(.*\),.*\)";
+			var match = Regex.Match(query, regex, RegexOptions.IgnoreCase);
+			if (match.Success)
+			{
+				foreach (Group matchGroup in match.Groups)
+				{
+					stringsToReplace.Add(matchGroup.Value);
+				}
+			}
+
+			return stringsToReplace;
+		}
+
+		string GetPropertyName(string functionQuery, string functionName)
+		{
+			string propertyName = null;
+			var regex = $@"{functionName}\((.*)\),";
+			var match = Regex.Match(functionQuery, regex, RegexOptions.IgnoreCase);
+			if (match.Success)
+			{
+				if (match.Groups.Count > 1)
+				{
+					propertyName = match.Groups[1].Value;
+				}
+			}
+
+			return propertyName;
+		}
+
+		string GetUpdatedQuery(string query, string propertyName, string functionName)
+		{
+			var regex = $@"{functionName}\((.*)\),";
+			var updatedQuery = Regex.Replace(query, regex, $"{propertyName},");
+			var closing = updatedQuery.LastIndexOf(')');
+			updatedQuery = updatedQuery.Substring(0, closing);
+			return $"{updatedQuery}, true)";
+		}
 	}
 }
