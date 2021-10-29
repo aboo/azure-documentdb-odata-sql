@@ -209,7 +209,7 @@ namespace Microsoft.Azure.Documents.OData.Sql
 		private List<string> GetStringsToReplace(string query, string functionName, string stringFunctionName)
 		{
 			List<string> stringsToReplace = new List<string>();
-			var regex = $@"{functionName}\({stringFunctionName}\(.*\),.*\)";
+			var regex = $@"{functionName}\({stringFunctionName}\(c.\w+\),\'\w+\'\)";
 			var match = Regex.Match(query, regex, RegexOptions.IgnoreCase);
 			if (match.Success)
 			{

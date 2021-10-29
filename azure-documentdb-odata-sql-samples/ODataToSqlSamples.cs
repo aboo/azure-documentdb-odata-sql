@@ -799,6 +799,12 @@ namespace azure_documentdb_odata_sql_tests
 		[DataRow("http://localhost/User?$filter=startswith(toupper(englishName), 'microsoft')", "SELECT * FROM c WHERE STARTSWITH(c.englishName,'microsoft', true) ")]
 		[DataRow("http://localhost/User?$filter=contains(toupper(englishName), 'microsoft')", "SELECT * FROM c WHERE CONTAINS(c.englishName,'microsoft', true) ")]
 		[DataRow("http://localhost/User?$filter=endswith(toupper(englishName), 'microsoft')", "SELECT * FROM c WHERE ENDSWITH(c.englishName,'microsoft', true) ")]
+		[DataRow("http://localhost/User?$filter=endswith(toupper(englishName), 'microsoft') and startswith(tolower(englishName),'random')", "SELECT * FROM c WHERE ENDSWITH(c.englishName,'microsoft', true) AND STARTSWITH(c.englishName,'random', true) ")]
+		[DataRow("http://localhost/User?$filter=endswith(toupper(englishName), 'microsoft') or startswith(englishName,'randoM')", "SELECT * FROM c WHERE ENDSWITH(c.englishName,'microsoft', true) OR STARTSWITH(c.englishName,'randoM') ")]
+		[DataRow("http://localhost/User?$filter=endswith(toupper(englishName), 'microsoft') and endswith(tolower(englishName),'random')", "SELECT * FROM c WHERE ENDSWITH(c.englishName,'microsoft', true) AND ENDSWITH(c.englishName,'random', true) ")]
+		[DataRow("http://localhost/User?$filter=endswith(toupper(englishName), 'microsoft') and endswith(tolower(englishName),'random')", "SELECT * FROM c WHERE ENDSWITH(c.englishName,'microsoft', true) AND ENDSWITH(c.englishName,'random', true) ")]
+		[DataRow("http://localhost/User?$filter=startswith(toupper(englishName), 'microsoft') or startswith(englishName,'randoM')", "SELECT * FROM c WHERE STARTSWITH(c.englishName,'microsoft', true) OR STARTSWITH(c.englishName,'randoM') ")]
+		[DataRow("http://localhost/User?$filter=startswith(toupper(englishName), 'microsoft') or startswith(tolower(englishName),'randoM')", "SELECT * FROM c WHERE STARTSWITH(c.englishName,'microsoft', true) OR STARTSWITH(c.englishName,'randoM', true) ")]
 		public void Translate_ReturnsCaseInsensitiveStringFunction_WhenODataQueryContainsCaseInsensitiveStringQuery(string uriString, string expectedSqlQuery)
 		{
 			HttpRequest.QueryString = QueryString.FromUriComponent(new Uri(uriString));

@@ -21,7 +21,7 @@ PRs are welcome.
 Converts [OData V4](http://docs.oasis-open.org/odata/odata/v4.0/odata-v4.0-part1-protocol.html) queries to [DocumentDB SQL](https://azure.microsoft.com/en-us/documentation/articles/documentdb-sql-query/) queries. 
 
 ## Release Notes
-* 3.1.80 Added support for optimized case-insensitive string queries
+* 3.1.80 Added support for optimized case-insensitive string queries. This is a breaking change for startswith, endswith and contains when toupper or tolower is used and are changed to case insensitive queris
 * 3.0.80 Added netcore 3.0 support
 * 3.0.70 Added netstandard 2.0 support
 * 2.0.40 Fixed checking null equality against range variable reference node and nested one failing
