@@ -805,6 +805,9 @@ namespace azure_documentdb_odata_sql_tests
 		[DataRow("http://localhost/User?$filter=endswith(toupper(englishName), 'microsoft') and endswith(tolower(englishName),'random')", "SELECT * FROM c WHERE ENDSWITH(c.englishName,'microsoft', true) AND ENDSWITH(c.englishName,'random', true) ")]
 		[DataRow("http://localhost/User?$filter=startswith(toupper(englishName), 'microsoft') or startswith(englishName,'randoM')", "SELECT * FROM c WHERE STARTSWITH(c.englishName,'microsoft', true) OR STARTSWITH(c.englishName,'randoM') ")]
 		[DataRow("http://localhost/User?$filter=startswith(toupper(englishName), 'microsoft') or startswith(tolower(englishName),'randoM')", "SELECT * FROM c WHERE STARTSWITH(c.englishName,'microsoft', true) OR STARTSWITH(c.englishName,'randoM', true) ")]
+		[DataRow("http://localhost/User?$filter=startswith(tolower(englishName), 'microsoft test')", "SELECT * FROM c WHERE STARTSWITH(c.englishName,'microsoft test', true) ")]
+		[DataRow("http://localhost/User?$filter=startswith(toupper(englishName), 'microsoft ') or startswith(tolower(englishName),'randoM test')", "SELECT * FROM c WHERE STARTSWITH(c.englishName,'microsoft ', true) OR STARTSWITH(c.englishName,'randoM test', true) ")]
+		[DataRow("http://localhost/User?$filter=endswith(toupper(englishName), '') and startswith(tolower(englishName),' ')", "SELECT * FROM c WHERE ENDSWITH(c.englishName,'', true) AND STARTSWITH(c.englishName,' ', true) ")]
 		public void Translate_ReturnsCaseInsensitiveStringFunction_WhenODataQueryContainsCaseInsensitiveStringQuery(string uriString, string expectedSqlQuery)
 		{
 			HttpRequest.QueryString = QueryString.FromUriComponent(new Uri(uriString));
