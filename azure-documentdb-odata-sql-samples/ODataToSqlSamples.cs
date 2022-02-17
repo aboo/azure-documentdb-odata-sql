@@ -1,20 +1,29 @@
 ﻿using System;
+using Microsoft.OData.UriParser;
+using Microsoft.Azure.Documents.OData.Sql;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Builder;
+
+#if NET6_0
+using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Query.Validator;
+using Microsoft.OData.ModelBuilder;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.OData.Query;
+#else
 using System.Net.Http;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNet.OData.Query.Validators;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Azure.Documents.OData.Sql;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OData.UriParser;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NSubstitute;
 using ODataPath = Microsoft.AspNet.OData.Routing.ODataPath;
+#endif
 
 namespace azure_documentdb_odata_sql_tests
 {
@@ -28,7 +37,7 @@ namespace azure_documentdb_odata_sql_tests
 
 		private static HttpRequest HttpRequest { get; set; }
 
-		private static ServiceProvider Provider { get; set; }
+		private static IServiceProvider Provider { get; set; }
 
 		// Use ClassInitialize to run code before running the first test in the class
 		[ClassInitialize()]
@@ -47,7 +56,14 @@ namespace azure_documentdb_odata_sql_tests
 
 			var collection = new ServiceCollection();
 
+#if NET6_0
+			collection
+				.AddControllers()
+				.AddOData();
+#else
 			collection.AddOData();
+#endif
+
 			collection.AddODataQueryFilter();
 			collection.AddTransient<ODataUriResolver>();
 			collection.AddTransient<ODataQueryValidator>();
@@ -56,12 +72,19 @@ namespace azure_documentdb_odata_sql_tests
 			collection.AddTransient<SkipQueryValidator>();
 			collection.AddTransient<OrderByQueryValidator>();
 
+#if NET6_0
+			collection.AddTransient<ILoggerFactory, TestLoggingFactory>();
+#endif
+
 			Provider = collection.BuildServiceProvider();
 
 			var applicationBuilder = Substitute.For<IApplicationBuilder>();
 			applicationBuilder.ApplicationServices.Returns(Provider);
+
+#if !NET6_0
 			var routeBuilder = new RouteBuilder(applicationBuilder);
 			routeBuilder.EnableDependencyInjection();
+#endif
 		}
 
 		// Use TestInitialize to run code before running each test 
@@ -832,7 +855,7 @@ namespace azure_documentdb_odata_sql_tests
 			Assert.AreEqual(expectedSqlQuery, actualSqlQuery);
 		}
 
-		#region Helpers
+#region Helpers
 		private static ODataQueryOptions GetODataQueryOptions(string oData)
 		{
 			const string baseUrl = "http://localhost/User?";
@@ -843,6 +866,26 @@ namespace azure_documentdb_odata_sql_tests
 		}
 
 		private static ODataToSqlTranslator Translator => new ODataToSqlTranslator(new SQLQueryFormatter());
-		#endregion
+#endregion
 	}
+
+#if NET6_0
+	public class TestLoggingFactory : Microsoft.Extensions.Logging.ILoggerFactory
+	{
+		private readonly ILogger logger = Substitute.For<ILogger>();
+		public void Dispose()
+		{
+		}
+
+		public void AddProvider(ILoggerProvider provider)
+		{
+		}
+
+		public ILogger CreateLogger(string categoryName)
+		{
+			return logger;
+		}
+	}
+
+#endif
 }
