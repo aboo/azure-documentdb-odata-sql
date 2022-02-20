@@ -13,4 +13,5 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
-      - run: dotnet build azure-documentdb-odata-sql/azure-documentdb-odata-sql.csproj
+      - run: dotnet build azure-documentdb-odata-sql.sln
+      - run: dotnet test azure-documentdb-odata-sql.sln
