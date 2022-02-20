@@ -20,7 +20,7 @@ jobs:
         uses: rohith/publish-nuget@v2
         with:
           # Filepath of the project to be packaged, relative to root of repository
-          PROJECT_FILE_PATH: \azure-documentdb-odata-sql\azure-documentdb-odata-sql.csproj
+          PROJECT_FILE_PATH: azure-documentdb-odata-sql\azure-documentdb-odata-sql.csproj
           
           # NuGet package id, used for version detection & defaults to project name
           PACKAGE_NAME: Lambda.Azure.CosmosDb.OData.Sql
