@@ -27,7 +27,7 @@ jobs:
       version: ${{ steps.version.outputs.version }}
       timestamp: ${{env.BUILD_TIME}}
   build:
-    name: Build and Test
+    name: Pack and Deploy
     runs-on: windows-latest
     needs: [versioning]
     steps:
