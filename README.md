@@ -20,6 +20,34 @@ PRs are welcome.
 
 Converts [OData V4](http://docs.oasis-open.org/odata/odata/v4.0/odata-v4.0-part1-protocol.html) queries to [DocumentDB SQL](https://azure.microsoft.com/en-us/documentation/articles/documentdb-sql-query/) queries. 
 
+## Versioning and Documentation
+
+### Deploy Next Version
+
+The versioning is maintained by the maintainer.
+
+Maintainer will need to:
+
+* tag the master branch with the version matching the release notes
+* push the tag
+
+Once the tag is pushed the deployment action will trigger.
+
+### Documenting Release Notes
+
+Please check with the maintainer to know what's the next version number. Usually it's the next incremental of the minor part.
+
+Add the bullet for your next version and list the changes in an indented bulled list.
+
+For example:
+
+```markdown
+* 4.0.x
+  * change one
+  * change two
+```
+
+
 ## Release Notes
 
 * 3.2.x
