@@ -10,9 +10,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
-        with:
-          token: ${{secrets.ACCESS_TOKEN}}
-          submodules: "recursive"
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
