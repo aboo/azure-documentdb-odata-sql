@@ -1,0 +1,42 @@
+name: Pull Request CI
+on:
+  push:
+    tags:
+      - v*
+jobs:
+  versioning:
+    name: Versioning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Identify this version
+        uses: paulhatch/semantic-version@v4.0.2
+        id: version
+        with:
+          bump_each_commit: true
+      - name: Print version
+        run: echo ${{ steps.version.outputs.version }}
+      - name: Build time
+        run: echo "BUILD_TIME=$(date +%s)" >> $GITHUB_ENV
+      - name: Print build time
+        run: echo ${{env.BUILD_TIME}}
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      timestamp: ${{env.BUILD_TIME}}
+  build:
+    name: Build and Test
+    runs-on: windows-latest
+    needs: [versioning]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+      - name: Build Nuget Package
+        run: dotnet pack -c Release azure-documentdb-odata-sql\azure-documentdb-odata-sql.csproj -o . -c azure-documentdb-odata-sql\azure-documentdb-odata-sql.nuspec /p:Version=${{needs.versioning.outputs.version}} /p:PackageID=Lambda.Azure.CosmosDb.OData.Sql
+      - name: Push NuGet Package
+        run: dotnet nuget push Lambda.Azure.CosmosDb.OData.Sql.${{needs.versioning.outputs.version}}.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json

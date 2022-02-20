@@ -21,6 +21,15 @@ PRs are welcome.
 Converts [OData V4](http://docs.oasis-open.org/odata/odata/v4.0/odata-v4.0-part1-protocol.html) queries to [DocumentDB SQL](https://azure.microsoft.com/en-us/documentation/articles/documentdb-sql-query/) queries. 
 
 ## Release Notes
+
+* 3.2.x
+  * No logic change
+  * Preparation for version 4 based on .Net 6
+  * Moved CI/CD to GitHub from AppVeyor
+  * Change in versioning strategy
+    * Release notes will be based on major and minor
+    * Patch will be generated at build time after push
+    * Maintainer will tag the next version and push the tag to trigger the deployment process
 * 3.1.87 Fixed an issue regarding having multiple words in string functions
 * 3.1.85 Added support for optimized case-insensitive string queries. This is a breaking change for startswith, endswith and contains when toupper or tolower is used and are changed to case insensitive queris
 * 3.0.80 Added netcore 3.0 support
