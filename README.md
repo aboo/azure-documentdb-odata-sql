@@ -49,7 +49,7 @@ For example:
 
 
 ## Release Notes
-* 4.0.x
+* 4.1.x
   * No logic change
   * Added support for .Net 6
 * 3.2.x
