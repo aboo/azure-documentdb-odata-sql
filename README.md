@@ -49,7 +49,9 @@ For example:
 
 
 ## Release Notes
-
+* 4.1.x
+  * No logic change
+  * Added support for .Net 6
 * 3.2.x
   * No logic change
   * Preparation for version 4 based on .Net 6

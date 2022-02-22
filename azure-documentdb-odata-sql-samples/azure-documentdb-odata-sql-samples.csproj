@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+	  <TargetFrameworks>net462;net6.0</TargetFrameworks>
 		<debugType>full</debugType>
   </PropertyGroup>
 
@@ -11,11 +11,23 @@
 	
 	<ItemGroup>
 		<PackageReference Include="NSubstitute" Version="4.2.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="4.1.0" />
-		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0" />
 		<PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
 		<PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.8" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
+		<PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
 	</ItemGroup>
 
 	

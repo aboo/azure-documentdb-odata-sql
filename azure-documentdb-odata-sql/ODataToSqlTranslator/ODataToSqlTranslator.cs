@@ -13,6 +13,10 @@ using System.Web.OData.Query;
 using Microsoft.AspNet.OData.Query;
 #endif
 
+#if NET6_0
+using Microsoft.AspNetCore.OData.Query;
+#endif
+
 namespace Microsoft.Azure.Documents.OData.Sql
 {
 	/// <summary>
