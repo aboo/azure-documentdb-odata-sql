@@ -463,7 +463,7 @@ namespace azure_documentdb_odata_sql_tests
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
 			Assert.AreEqual("SELECT * FROM c WHERE ARRAY_CONTAINS(c.tags,'tag1') AND ARRAY_CONTAINS(c.tags,'tag2') AND ARRAY_CONTAINS(c.tags,'tag3') ", sqlQuery);
 		}
-		
+
 		[TestMethod]
 		public void TranslateAny_WhenAnyIsNotTheFirstConditionInTheFilter()
 		{
@@ -474,8 +474,8 @@ namespace azure_documentdb_odata_sql_tests
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
 			Assert.AreEqual("SELECT * FROM c WHERE c.parent.child = 'childValue' AND ARRAY_CONTAINS(c.tags,'tag') ", sqlQuery);
 		}
-
-        [TestMethod]
+		
+		[TestMethod]
 		public void TranslateAnyToJoin_WhenQueriedBasedOnChildProperty()
 		{
 			HttpRequest.QueryString = QueryString.FromUriComponent(new Uri("http://localhost/User?$filter=products/any(p: p/name eq 'test')"));
