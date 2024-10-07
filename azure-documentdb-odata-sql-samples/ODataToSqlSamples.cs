@@ -463,17 +463,17 @@ namespace azure_documentdb_odata_sql_tests
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
 			Assert.AreEqual("SELECT * FROM c WHERE ARRAY_CONTAINS(c.tags,'tag1') AND ARRAY_CONTAINS(c.tags,'tag2') AND ARRAY_CONTAINS(c.tags,'tag3') ", sqlQuery);
 		}
-
-        [TestMethod]
-        public void TranslateAny_WhenAnyIsNotTheFirstConditionInTheFilter()
-        {
-            HttpRequest.QueryString = QueryString.FromUriComponent(new Uri("http://localhost/User?$filter=parent/child eq 'childValue' and tags/any(t: t eq 'tag')"));
-            var oDataQueryOptions = new ODataQueryOptions(ODataQueryContext, HttpRequest);
-
-            var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
-            var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-            Assert.AreEqual("SELECT * FROM c WHERE c.parent.child = 'childValue' AND ARRAY_CONTAINS(c.tags,'tag') ", sqlQuery);
-        }
+		
+		[TestMethod]
+		public void TranslateAny_WhenAnyIsNotTheFirstConditionInTheFilter()
+		{
+			HttpRequest.QueryString = QueryString.FromUriComponent(new Uri("http://localhost/User?$filter=parent/child eq 'childValue' and tags/any(t: t eq 'tag')"));
+			var oDataQueryOptions = new ODataQueryOptions(ODataQueryContext, HttpRequest);
+			
+			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
+			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
+			Assert.AreEqual("SELECT * FROM c WHERE c.parent.child = 'childValue' AND ARRAY_CONTAINS(c.tags,'tag') ", sqlQuery);
+		}
 
         [TestMethod]
 		public void TranslateAnyToJoin_WhenQueriedBasedOnChildProperty()
