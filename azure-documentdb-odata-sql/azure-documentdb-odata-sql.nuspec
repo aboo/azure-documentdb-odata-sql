@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Lambda.Azure.CosmosDb.OData.Sql</id>
-    <version>4.2.0</version>
+    <version>$version$</version>
     <authors>Ziyou Zheng, Aboo Azarnoush, Amir Hesami</authors>
     <owners>Microsoft Corporation, Aboo Azarnoush</owners>
     <projectUrl>https://github.com/aboo/azure-documentdb-odata-sql</projectUrl>

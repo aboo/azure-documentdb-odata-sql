@@ -39,7 +39,7 @@ jobs:
         with:
           dotnet-version: '6.0.x'
       - name: Build Nuget Package
-        run: dotnet pack -c Release azure-documentdb-odata-sql\azure-documentdb-odata-sql.csproj -o . /p:NuspecFile=azure-documentdb-odata-sql.nuspec /p:Version=${{needs.versioning.outputs.version}} /p:PackageID=Lambda.Azure.CosmosDb.OData.Sql
+        run: dotnet pack -c Release azure-documentdb-odata-sql\azure-documentdb-odata-sql.csproj -o . /p:NuspecFile=azure-documentdb-odata-sql.nuspec /p:Version=${{needs.versioning.outputs.version}} /p:NuspecProperties="version=${{needs.versioning.outputs.version}}" /p:PackageID=Lambda.Azure.CosmosDb.OData.Sql
       - name: Push NuGet Package
         run: dotnet nuget push Lambda.Azure.CosmosDb.OData.Sql.${{needs.versioning.outputs.version}}.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
 
