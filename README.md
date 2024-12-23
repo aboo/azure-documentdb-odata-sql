@@ -49,6 +49,8 @@ For example:
 
 
 ## Release Notes
+* 4.2.x
+  * Fixed an issue with `any` not being detected correctly
 * 4.1.x
   * No logic change
   * Added support for .Net 6
