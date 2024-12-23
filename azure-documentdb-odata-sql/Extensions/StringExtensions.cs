@@ -9,7 +9,7 @@ namespace Microsoft.Azure.Documents.OData.Sql.Extensions
 	{
 		public static string FindAndTranslateAny(this string translation)
 		{
-			const string anyRegEx = @"(c\.[^\/]*)\/any\([^:]*:[^=]*= ([^)]*)\)";
+			const string anyRegEx = @"(c\.[\w\.]+)\/any\([^:]*:[^=]*= ([^)]*)\)";
 			const string arrayContainsFormat = "ARRAY_CONTAINS({0},{1})";
 			var finalTranslation = translation;
 
