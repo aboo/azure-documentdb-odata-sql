@@ -13,7 +13,7 @@ using System.Web.OData.Query;
 using Microsoft.AspNet.OData.Query;
 #endif
 
-#if NET6_0
+#if NET6_0 || NET8_0
 using Microsoft.AspNetCore.OData.Query;
 #endif
 

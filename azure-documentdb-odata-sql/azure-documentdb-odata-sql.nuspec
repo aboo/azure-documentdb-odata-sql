@@ -28,16 +28,23 @@
 			<group targetFramework=".NET6.0">
 				<dependency id="Microsoft.AspNetCore.OData" version="8.0.7" />
 			</group>
+            <group targetFramework=".NET8.0">
+                <dependency id="Microsoft.AspNetCore.OData" version="9.1.1" />
+            </group>
 		</dependencies>
   </metadata>
   
   <files>
 	  <file src="bin\Release\netstandard2.0\Microsoft.Azure.Documents.OData.Sql.dll" target="lib\netstandard2.0" />
-    <file src="bin\Release\netstandard2.0\Microsoft.Azure.Documents.OData.Sql.pdb" target="lib\netstandard2.0" />
-    <file src="bin\Release\netstandard2.0\Microsoft.Azure.Documents.OData.Sql.XML" target="lib\netstandard2.0" />
+      <file src="bin\Release\netstandard2.0\Microsoft.Azure.Documents.OData.Sql.pdb" target="lib\netstandard2.0" />
+      <file src="bin\Release\netstandard2.0\Microsoft.Azure.Documents.OData.Sql.XML" target="lib\netstandard2.0" />
 	  <file src="bin\Release\net6.0\Microsoft.Azure.Documents.OData.Sql.dll" target="lib\net6.0" />
 	  <file src="bin\Release\net6.0\Microsoft.Azure.Documents.OData.Sql.pdb" target="lib\net6.0" />
 	  <file src="bin\Release\net6.0\Microsoft.Azure.Documents.OData.Sql.XML" target="lib\net6.0" />
+      <file src="bin\Release\net8.0\Microsoft.Azure.Documents.OData.Sql.dll" target="lib\net8.0" />
+      <file src="bin\Release\net8.0\Microsoft.Azure.Documents.OData.Sql.pdb" target="lib\net8.0" />
+      <file src="bin\Release\net8.0\Microsoft.Azure.Documents.OData.Sql.XML" target="lib\net8.0" />
+
   </files>
   
 </package>

@@ -49,6 +49,9 @@ For example:
 
 
 ## Release Notes
+* 5.0.x
+  * No logic change
+  * Added support for .Net 8
 * 4.2.x
   * Fixed an issue with `any` not being detected correctly
 * 4.1.x
