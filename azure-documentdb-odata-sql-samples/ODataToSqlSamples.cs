@@ -7,7 +7,7 @@ using NSubstitute;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Builder;
 
-#if NET6_0
+#if NET6_0 || NET8_0
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Query.Validator;
 using Microsoft.OData.ModelBuilder;
@@ -56,9 +56,9 @@ namespace azure_documentdb_odata_sql_tests
 
 			var collection = new ServiceCollection();
 
-#if NET6_0
-			collection
-				.AddControllers()
+#if NET6_0 || NET8_0
+            collection
+                .AddControllers()
 				.AddOData();
 #else
 			collection.AddOData();
@@ -72,8 +72,8 @@ namespace azure_documentdb_odata_sql_tests
 			collection.AddTransient<SkipQueryValidator>();
 			collection.AddTransient<OrderByQueryValidator>();
 
-#if NET6_0
-			collection.AddTransient<ILoggerFactory, TestLoggingFactory>();
+#if NET6_0 || NET8_0
+            collection.AddTransient<ILoggerFactory, TestLoggingFactory>();
 #endif
 
 			Provider = collection.BuildServiceProvider();
@@ -81,14 +81,14 @@ namespace azure_documentdb_odata_sql_tests
 			var applicationBuilder = Substitute.For<IApplicationBuilder>();
 			applicationBuilder.ApplicationServices.Returns(Provider);
 
-#if !NET6_0
+#if !NET6_0 && !NET8_0
 			var routeBuilder = new RouteBuilder(applicationBuilder);
 			routeBuilder.EnableDependencyInjection();
 #endif
-		}
+        }
 
-		// Use TestInitialize to run code before running each test 
-		[TestInitialize()]
+        // Use TestInitialize to run code before running each test 
+        [TestInitialize()]
 		public void TestInitialize()
 		{
 			HttpRequest = new DefaultHttpRequest(new DefaultHttpContext
@@ -637,8 +637,12 @@ namespace azure_documentdb_odata_sql_tests
 
 			var oDataToSqlTranslator = new ODataToSqlTranslator(new SQLQueryFormatter());
 			var sqlQuery = oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual("SELECT VALUE c FROM c JOIN l IN c.payload.bet.legs JOIN o IN l.outcomes WHERE o.id = 'test' ", sqlQuery);
-		}
+#if NET8_0
+			Assert.AreEqual("SELECT VALUE c FROM c JOIN l IN c.payload.bet.legs JOIN o IN l.legs.outcomes WHERE o.id = 'test' ", sqlQuery);
+#else
+            Assert.AreEqual("SELECT VALUE c FROM c JOIN l IN c.payload.bet.legs JOIN o IN l.outcomes WHERE o.id = 'test' ", sqlQuery);
+#endif
+        }
 
 		[TestMethod]
 		public void TranslateEnum_WhenClassDoestHaveId()
@@ -755,10 +759,17 @@ namespace azure_documentdb_odata_sql_tests
 
 			var sqlQuery =
 				oDataToSqlTranslator.Translate(oDataQueryOptions, TranslateOptions.ALL & ~TranslateOptions.TOP_CLAUSE);
-			Assert.AreEqual(
+
+#if NET8_0
+            Assert.AreEqual(
+				"SELECT VALUE c FROM c JOIN l IN c.payload.bet.legs JOIN o IN l.legs.outcomes WHERE o.competitor.id = 'test' ",
+				sqlQuery);
+#else
+            Assert.AreEqual(
 				"SELECT VALUE c FROM c JOIN l IN c.payload.bet.legs JOIN o IN l.outcomes WHERE o.competitor.id = 'test' ",
 				sqlQuery);
-		}
+#endif
+        }
 
 		[TestMethod]
 		public void TranslateAnyToJoin_ReturnsCorrectResult_WhenQueryIsBasedOnANestedProperty()
@@ -880,8 +891,8 @@ namespace azure_documentdb_odata_sql_tests
 #endregion
 	}
 
-#if NET6_0
-	public class TestLoggingFactory : Microsoft.Extensions.Logging.ILoggerFactory
+#if NET6_0 || NET8_0
+    public class TestLoggingFactory : Microsoft.Extensions.Logging.ILoggerFactory
 	{
 		private readonly ILogger logger = Substitute.For<ILogger>();
 		public void Dispose()
