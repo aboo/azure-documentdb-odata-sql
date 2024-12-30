@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '8.0.x'
       - name: Build project
         run: dotnet build azure-documentdb-odata-sql.sln
       - name: Run tests
